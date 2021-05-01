@@ -1,39 +1,60 @@
 import React, { useState } from 'react';
-import {SafeAreaView, ScrollView, View, Text, StyleSheet, Image, TextInput} from 'react-native';
+import {SafeAreaView, ScrollView, View, Text, StyleSheet, Image, TextInput, Alert} from 'react-native';
 import MeuButton from '../components/MeuButton';
 import {COLORS} from '../assets/colors';
 
 import app from '@react-native-firebase/app';
 import auth from '@react-native-firebase/auth';
+import {CommonActions} from '@react-navigation/native';
 
-const SignIn = (props) => {
+const SignIn = ({navigation}) => { // navigation é um objeto com vários objetos dentro
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
 
   const recuperarSenha = () => {
-    alert('Abrir modal recuperar senha'); 
+    navigation.navigate('ForgotPassword');
   }
 
   const entrar = () => {
     console.log(`Email=${email} Senha=${pass}`); 
-    console.log(auth);
-    
-    auth()
-    .signInWithEmailAndPassword(email, pass)
-    .then(() => {
-      console.log('Entrou');
-      alert('Logou');
-      setEmail('');
-      setPass('');
-    })
-    .catch((e) => {
-      console.log('SignIn: erro ao entrar: ' + e);
-    });
+
+    if(email !== '' && pass !== '') {
+      auth()
+      .signInWithEmailAndPassword(email, pass)
+      .then(() => {
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{name: 'Home'}], // Home é o nome da rota no App.js
+          }),
+        );
+      })
+      .catch((e) => {
+        console.log('SignIn: erro ao entrar: ' + e);
+        switch (e.code) {
+          case 'auth/user-not-found':
+            Alert.alert('Erro', 'Usuário não cadastrado.');
+            break;
+          case 'auth/wrong-password':
+            Alert.alert('Erro', 'Erro na senha.');
+            break;
+          case 'auth/invalid-email':
+            Alert.alert('Erro', 'Email inválido.');
+            break;
+          case 'auth/user-disabled':
+            Alert.alert('Erro', 'Usuário disabilitado.');
+            break;
+        }
+      });
+    }
+    else {
+      Alert.alert('Erro', 'Preencha os campos.');
+    }
   }
 
   const cadastrar = () => {
-    alert('vai para a screen SignUp');
-  }
+    navigation.navigate('SignUp'); // passar prop name do component de Screen arquivo App
+  };
 
   return (
     <SafeAreaView style={styles.container}>
