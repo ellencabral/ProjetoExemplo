@@ -1,5 +1,14 @@
-import React, { useState } from 'react';
-import {SafeAreaView, ScrollView, View, Text, StyleSheet, Image, TextInput, Alert} from 'react-native';
+import React, {useState} from 'react';
+import {
+  SafeAreaView,
+  ScrollView,
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TextInput,
+  Alert,
+} from 'react-native';
 import MeuButton from '../components/MeuButton';
 import {COLORS} from '../assets/colors';
 
@@ -7,50 +16,57 @@ import app from '@react-native-firebase/app';
 import auth from '@react-native-firebase/auth';
 import {CommonActions} from '@react-navigation/native';
 
-const SignIn = ({navigation}) => { // navigation é um objeto com vários objetos dentro
+const SignIn = ({navigation}) => {
+  // navigation é um objeto com vários objetos dentro
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
 
   const recuperarSenha = () => {
     navigation.navigate('ForgotPassword');
-  }
+  };
 
   const entrar = () => {
-    console.log(`Email=${email} Senha=${pass}`); 
+    console.log(`Email=${email} Senha=${pass}`);
 
-    if(email !== '' && pass !== '') {
+    if (email !== '' && pass !== '') {
       auth()
-      .signInWithEmailAndPassword(email, pass)
-      .then(() => {
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{name: 'Home'}], // Home é o nome da rota no App.js
-          }),
-        );
-      })
-      .catch((e) => {
-        console.log('SignIn: erro ao entrar: ' + e);
-        switch (e.code) {
-          case 'auth/user-not-found':
-            Alert.alert('Erro', 'Usuário não cadastrado.');
-            break;
-          case 'auth/wrong-password':
-            Alert.alert('Erro', 'Erro na senha.');
-            break;
-          case 'auth/invalid-email':
-            Alert.alert('Erro', 'Email inválido.');
-            break;
-          case 'auth/user-disabled':
-            Alert.alert('Erro', 'Usuário disabilitado.');
-            break;
-        }
-      });
-    }
-    else {
+        .signInWithEmailAndPassword(email, pass)
+        .then(() => {
+          if (!auth().currentUser.emailVerified) {
+            Alert.alert(
+              'Erro',
+              'Você deve verificar o seu email para prosseguir.',
+            );
+            return;
+          }
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{name: 'Home'}], // Home é o nome da rota no App.js
+            }),
+          );
+        })
+        .catch(e => {
+          console.log('SignIn: erro ao entrar: ' + e);
+          switch (e.code) {
+            case 'auth/user-not-found':
+              Alert.alert('Erro', 'Usuário não cadastrado.');
+              break;
+            case 'auth/wrong-password':
+              Alert.alert('Erro', 'Erro na senha.');
+              break;
+            case 'auth/invalid-email':
+              Alert.alert('Erro', 'Email inválido.');
+              break;
+            case 'auth/user-disabled':
+              Alert.alert('Erro', 'Usuário disabilitado.');
+              break;
+          }
+        });
+    } else {
       Alert.alert('Erro', 'Preencha os campos.');
     }
-  }
+  };
 
   const cadastrar = () => {
     navigation.navigate('SignUp'); // passar prop name do component de Screen arquivo App
@@ -60,44 +76,48 @@ const SignIn = ({navigation}) => { // navigation é um objeto com vários objeto
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <View style={styles.divSuperior}>
-          <Image 
-          source={require('../assets/images/logo.png')}
-          accessibilityLabel="logo do app" 
+          <Image
+            source={require('../assets/images/logo.png')}
+            accessibilityLabel="logo do app"
           />
 
-          <TextInput 
-            style={styles.input} 
-            placeholder="E-mail" 
-            keyboardType="email-address" 
-            returnKeyType="next" 
-            onChangeText={(t) => setEmail(t)}
+          <TextInput
+            style={styles.input}
+            placeholder="E-mail"
+            keyboardType="email-address"
+            returnKeyType="next"
+            onChangeText={t => setEmail(t)}
             onEndEditing={() => this.passTextInput.focus()}
           />
-          <TextInput 
-            ref={(ref) => {
+          <TextInput
+            ref={ref => {
               this.passTextInput = ref;
             }}
-            style={styles.input} 
-            secureTextEntry={true} 
+            style={styles.input}
+            secureTextEntry={true}
             placeholder="Senha"
             keyboardType="default"
             returnKeyType="go"
             onChangeText={t => setPass(t)}
           />
-          <Text style={styles.textEsqueceuSenha} onPress={recuperarSenha}>Esqueceu sua senha?</Text>
+          <Text style={styles.textEsqueceuSenha} onPress={recuperarSenha}>
+            Esqueceu sua senha?
+          </Text>
           <MeuButton texto="ENTRAR" onClick={entrar} />
         </View>
-        
+
         <View style={styles.divInferior}>
           <View style={styles.divOuHr}>
-            <View style={styles.divHr}></View>
+            <View style={styles.divHr} />
             <Text style={styles.textOu}>OU</Text>
-            <View style={styles.divHr}></View>
+            <View style={styles.divHr} />
           </View>
 
           <View style={styles.divCadastrarSe}>
             <Text style={styles.textNormal}>Não tem uma conta?</Text>
-            <Text style={styles.textCadastrarSe} onPress={cadastrar}>Cadastre-se</Text>
+            <Text style={styles.textCadastrarSe} onPress={cadastrar}>
+              Cadastre-se
+            </Text>
           </View>
         </View>
       </ScrollView>
@@ -110,7 +130,7 @@ export default SignIn;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent:'center',
+    justifyContent: 'center',
     padding: 20,
   },
   divSuperior: {

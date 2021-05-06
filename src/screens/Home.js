@@ -32,7 +32,7 @@ const Home = (props) => {
 
   return (
     <View>
-      <Text style={styles.texto}>Olá, mundo.</Text>
+      <Text style={styles.texto}>Bem vindo!!</Text>
       <Text style={styles.texto}>Contador = {contador}</Text>
       <MeuButton texto="Contar" onClick={contar} />
       <MeuButton texto="Reset" onClick={reset} />
