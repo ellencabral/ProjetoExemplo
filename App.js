@@ -5,9 +5,10 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Home from './src/screens/Home';
 import SignIn from './src/screens/SignIn';
 import SignUp from './src/screens/SignUp';
-import { StatusBar } from 'react-native';
-import { COLORS } from './src/assets/colors';
+import {StatusBar} from 'react-native';
+import {COLORS} from './src/assets/colors';
 import ForgotPassword from './src/screens/ForgotPassword';
+import Preload from './src/screens/Preload';
 
 const Stack = createStackNavigator();
 
@@ -15,18 +16,30 @@ const App = () => {
   return (
     <NavigationContainer>
       <StatusBar backgroundColor={COLORS.primaryDark} />
-      <Stack.Navigator initialRouteName="SignIn">
-        <Stack.Screen name="SignIn" component={SignIn} options={signInStyle}
+      <Stack.Navigator initialRouteName="Preload">
+        <Stack.Screen
+          name="Preload"
+          component={Preload}
+          options={preloadStyle}
         />
+        <Stack.Screen name="SignIn" component={SignIn} options={signInStyle} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="SignUp" component={SignUp} options={signUpStyle} />
-        <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={ForgotPasswordStyle} />
+        <Stack.Screen
+          name="ForgotPassword"
+          component={ForgotPassword}
+          options={ForgotPasswordStyle}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
 
 export default App;
+
+const preloadStyle = {
+  headerShown: false,
+};
 
 const signInStyle = {
   headerLeft: false,
