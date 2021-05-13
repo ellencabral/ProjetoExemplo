@@ -11,10 +11,11 @@ import {
 } from 'react-native';
 import MeuButton from '../components/MeuButton';
 import {COLORS} from '../assets/colors';
-
 import app from '@react-native-firebase/app';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import {CommonActions} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignIn = ({navigation}) => {
   // navigation é um objeto com vários objetos dentro
@@ -23,6 +24,39 @@ const SignIn = ({navigation}) => {
 
   const recuperarSenha = () => {
     navigation.navigate('ForgotPassword');
+  };
+
+  const storeUserCache = async value => {
+    try {
+      value.pass = pass; 
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem('user', jsonValue);
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{name: 'Home'}], // Home é o nome da rota no App.js
+        }),
+      );
+    } catch (e) {
+      console.log('SignIn: erro em storeUserCache: ' + e);
+    }
+  };
+
+  const getUser = () => {
+    firestore()
+      .collection('users')
+      .doc(auth().currentUser.uid)
+      .get()
+      .then(doc => {
+        if (doc.exists) {
+          storeUserCache(doc.data());
+        } else {
+          console.log('O documento não existe na base de dados');
+        }
+      })
+      .catch(e => {
+        console.log('SignIn: erro em getUser: ' + e);
+      });
   };
 
   const entrar = () => {
@@ -39,12 +73,7 @@ const SignIn = ({navigation}) => {
             );
             return;
           }
-          navigation.dispatch(
-            CommonActions.reset({
-              index: 0,
-              routes: [{name: 'Home'}], // Home é o nome da rota no App.js
-            }),
-          );
+          getUser();
         })
         .catch(e => {
           console.log('SignIn: erro ao entrar: ' + e);

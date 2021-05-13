@@ -1,11 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import MeuButton from '../components/MeuButton';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Home = (props) => {
+const Home = props => {
   const [contador, setContador] = useState(0);
 
-  console.log(props);
+  //console.log(props);
 
   //1. componetDidMount
   //useEffect(() => {
@@ -29,6 +30,19 @@ const Home = (props) => {
   const reset = () => {
     setContador(0);
   };
+
+  const getUserCache = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('user');
+      console.log('getUserCache');
+      console.log(jsonValue);
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch (e) {
+      console.log('Home: erro em getUserCache: ' + e);
+    }
+  };
+
+  getUserCache();
 
   return (
     <View>
