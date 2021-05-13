@@ -2,9 +2,9 @@ import React, {useState} from 'react';
 import {Alert} from 'react-native';
 import MeuButton from '../../components/MeuButton';
 import {Body, TextInput} from './styles';
-
 import auth from '@react-native-firebase/auth';
 import {CommonActions} from '@react-navigation/native';
+import firestore from '@react-native-firebase/firestore';
 
 const SignUp = ({navigation}) => {
   const [name, setName] = useState(''); //O useState() cria uma variável que controlará o estado do componente.
@@ -12,50 +12,71 @@ const SignUp = ({navigation}) => {
   const [pass, setPass] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
 
+  console.log(firestore);
+
   const cadastrar = () => {
     if (name !== '' && email !== '' && pass !== '' && confirmPass !== '') {
-      auth()
-        .createUserWithEmailAndPassword(email, pass)
-        .then(() => {
-          let userF = auth().currentUser;
-          userF
-            .sendEmailVerification()
-            .then(() => {
-              Alert.alert(
-                'Informação',
-                'Foi enviado um email para: ' + email + ' para verificação.',
-              );
-              navigation.dispatch(
-                CommonActions.reset({
-                  index: 0,
-                  routes: [{name: 'SignIn'}],
-                }),
-              );
-            })
-            .catch(e => {
-              console.log('SignUp: erro ao cadastrar: ' + e);
-            });
-        })
-        .catch(e => {
-          console.log('SignUp: erro ao cadastrar: ' + e);
-          switch (e.code) {
-            case 'auth/email-already-in-use':
-              Alert.alert('Erro', 'Email já está em uso.');
-              break;
-            case 'auth/operation-not-allowed':
-              Alert.alert('Erro', 'Problemas ao cadastrar o usuário.');
-              break;
-            case 'auth/invalid-email':
-              Alert.alert('Erro', 'Email inválido.');
-              break;
-            case 'auth/weak-password':
-              Alert.alert(
-                'Erro',
-                'Senha fraca, por favor digite uma senha forte.',
-              );
-              break;
-          }
-        });
+      if (pass === confirmPass) {
+        auth()
+          .createUserWithEmailAndPassword(email, pass)
+          .then(() => {
+            let userF = auth().currentUser;
+            let user = {};
+            user.name = name;
+            user.email = email;
+            firestore()
+              .collection('users') //referência da coleção
+              .doc(userF.uid) //chave do documento
+              .set(user) //valores do documento
+              .then(() => {
+                console.log('SignUp, cadastrar: Usuário adicionado');
+                userF
+                  .sendEmailVerification()
+                  .then(() => {
+                    Alert.alert(
+                      'Informação',
+                      'Foi enviado um email para: ' +
+                        email +
+                        ' para verificação.',
+                    );
+                    navigation.dispatch(
+                      CommonActions.reset({
+                        index: 0,
+                        routes: [{name: 'SignIn'}],
+                      }),
+                    );
+                  })
+                  .catch(e => {
+                    console.log('SignUp: erro ao cadastrar: ' + e);
+                  });
+              })
+              .catch(e => {
+                console.log('SignUp: erro ao cadastrar: ' + e);
+              });
+          })
+          .catch(e => {
+            console.log('SignUp: erro ao cadastrar: ' + e);
+            switch (e.code) {
+              case 'auth/email-already-in-use':
+                Alert.alert('Erro', 'Email já está em uso.');
+                break;
+              case 'auth/operation-not-allowed':
+                Alert.alert('Erro', 'Problemas ao cadastrar o usuário.');
+                break;
+              case 'auth/invalid-email':
+                Alert.alert('Erro', 'Email inválido.');
+                break;
+              case 'auth/weak-password':
+                Alert.alert(
+                  'Erro',
+                  'Senha fraca, por favor digite uma senha forte.',
+                );
+                break;
+            }
+          });
+      } else {
+        Alert.alert('Erro', 'As senhas digitadas são diferentes.');
+      }
     } else {
       Alert.alert('Erro', 'Por favor, digite email e senha.');
     }
