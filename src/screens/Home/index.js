@@ -6,32 +6,39 @@ import {Container, FlatList} from './styles';
 import Item from './Item';
 import firestore from '@react-native-firebase/firestore';
 import {CommonActions} from '@react-navigation/routers';
+import Loading from '../../components/Loading';
 
 const Home = ({navigation}) => {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const getUsers = () => {
-    firestore()
+    const unsubscribe = firestore()
       .collection('users')
-      .get()
-      .then(querySnapshot => {
-        let d = [];
-        querySnapshot.forEach(doc => {
-          // doc.data() is never undefined for query doc snapshots
-          //console.log(doc.id, ' => ', doc.data());
-          const user = {
-            id: doc.id,
-            name: doc.data().name,
-            email: doc.data().email,
-          };
-          d.push(user);
-        });
-        //console.log(d);
-        setData(d);
-      })
-      .catch(e => {
-        console.log('Home, getUsers: ' + e);
-      });
+      .onSnapshot(
+        //inscrevendo um listener
+        querySnapshot => {
+          let d = [];
+          querySnapshot.forEach(doc => {
+            // doc.data() is never undefined for query doc snapshots
+            //console.log(doc.id, ' => ', doc.data());
+            const user = {
+              id: doc.id,
+              name: doc.data().name,
+              email: doc.data().email,
+            };
+            d.push(user);
+          });
+          //console.log(d);
+          setData(d);
+          setLoading(false);
+        },
+        e => {
+          console.log('Home, getUsers: ' + e);
+        },
+      );
+
+    return unsubscribe;
   };
 
   useEffect(() => {
@@ -43,12 +50,17 @@ const Home = ({navigation}) => {
       headerRight: () => <LogoutButton />,
     });
 
-    getUsers();
+    const unsubscribe = getUsers();
+
+    //componentDidUnmount
+    return () => {
+      console.log('ao desmontar o componente Home');
+      unsubscribe();
+    }
   }, []);
 
   const routeUser = item => {
     //quando clica no cartão ele empilha na stack de navegação
-    console.log(item);
     navigation.dispatch(
       CommonActions.navigate({
         name: 'User',
@@ -68,6 +80,7 @@ const Home = ({navigation}) => {
         renderItem={renderItem}
         keyExtractor={item => item.id}
       />
+      {loading && <Loading />}
     </Container>
   );
 };
