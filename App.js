@@ -9,6 +9,7 @@ import {StatusBar} from 'react-native';
 import {COLORS} from './src/assets/colors';
 import ForgotPassword from './src/screens/ForgotPassword';
 import Preload from './src/screens/Preload';
+import User from './src/screens/User';
 
 const Stack = createStackNavigator();
 
@@ -24,6 +25,7 @@ const App = () => {
         />
         <Stack.Screen name="SignIn" component={SignIn} options={signInStyle} />
         <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="User" component={User} options={userStyle} />
         <Stack.Screen name="SignUp" component={SignUp} options={signUpStyle} />
         <Stack.Screen
           name="ForgotPassword"
@@ -46,6 +48,13 @@ const signInStyle = {
   title: 'Bem-vindo',
   headerStyle: {backgroundColor: COLORS.primary},
   headerTitleStyle: {color: COLORS.white},
+};
+
+const userStyle = {
+  title: 'Usuário',
+  headerStyle: {backgroundColor: COLORS.primary},
+  headerTitleStyle: {color: COLORS.white},
+  headerTintColor: COLORS.white,
 };
 
 const ForgotPasswordStyle = {

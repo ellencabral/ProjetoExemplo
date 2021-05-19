@@ -5,6 +5,7 @@ import LogoutButton from '../../components/LogoutButton';
 import {Container, FlatList} from './styles';
 import Item from './Item';
 import firestore from '@react-native-firebase/firestore';
+import {CommonActions} from '@react-navigation/routers';
 
 const Home = ({navigation}) => {
   const [data, setData] = useState([]);
@@ -28,7 +29,7 @@ const Home = ({navigation}) => {
         //console.log(d);
         setData(d);
       })
-      .catch((e) => {
+      .catch(e => {
         console.log('Home, getUsers: ' + e);
       });
   };
@@ -46,7 +47,14 @@ const Home = ({navigation}) => {
   }, []);
 
   const routeUser = item => {
+    //quando clica no cartão ele empilha na stack de navegação
     console.log(item);
+    navigation.dispatch(
+      CommonActions.navigate({
+        name: 'User',
+        params: {user: item}, //objeto do usuário
+      }),
+    );
   };
 
   const renderItem = ({item}) => (
