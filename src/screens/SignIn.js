@@ -16,11 +16,13 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import {CommonActions} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loading from '../components/Loading';
 
 const SignIn = ({navigation}) => {
   // navigation é um objeto com vários objetos dentro
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const recuperarSenha = () => {
     navigation.navigate('ForgotPassword');
@@ -31,6 +33,7 @@ const SignIn = ({navigation}) => {
       value.pass = pass; 
       const jsonValue = JSON.stringify(value);
       await AsyncStorage.setItem('user', jsonValue);
+      setLoading(false);
       navigation.dispatch(
         CommonActions.reset({
           index: 0,
@@ -60,9 +63,8 @@ const SignIn = ({navigation}) => {
   };
 
   const entrar = () => {
-    console.log(`Email=${email} Senha=${pass}`);
-
     if (email !== '' && pass !== '') {
+      setLoading(true);
       auth()
         .signInWithEmailAndPassword(email, pass)
         .then(() => {
@@ -71,11 +73,13 @@ const SignIn = ({navigation}) => {
               'Erro',
               'Você deve verificar o seu email para prosseguir.',
             );
+            setLoading(false);
             return;
           }
           getUser();
         })
         .catch(e => {
+          setLoading(false);
           console.log('SignIn: erro ao entrar: ' + e);
           switch (e.code) {
             case 'auth/user-not-found':
@@ -150,6 +154,7 @@ const SignIn = ({navigation}) => {
           </View>
         </View>
       </ScrollView>
+      {loading && <Loading />}
     </SafeAreaView>
   );
 };
