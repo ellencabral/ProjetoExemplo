@@ -8,7 +8,7 @@ import firestore from '@react-native-firebase/firestore';
 import {CommonActions} from '@react-navigation/routers';
 import Loading from '../../components/Loading';
 
-const Home = ({navigation}) => {
+const Users = ({navigation}) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -34,7 +34,7 @@ const Home = ({navigation}) => {
           setLoading(false);
         },
         e => {
-          console.log('Home, getUsers: ' + e);
+          console.log('Users, getUsers: ' + e);
         },
       );
 
@@ -63,7 +63,7 @@ const Home = ({navigation}) => {
     //quando clica no cartão ele empilha na stack de navegação
     navigation.dispatch(
       CommonActions.navigate({
-        name: 'User',
+        name: 'Usuario',
         params: {user: item}, //objeto do usuário
       }),
     );
@@ -85,4 +85,4 @@ const Home = ({navigation}) => {
   );
 };
 
-export default Home;
+export default Users;

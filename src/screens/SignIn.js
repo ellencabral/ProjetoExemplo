@@ -37,7 +37,7 @@ const SignIn = ({navigation}) => {
       navigation.dispatch(
         CommonActions.reset({
           index: 0,
-          routes: [{name: 'Home'}], // Home é o nome da rota no App.js
+          routes: [{name: 'Alunos'}], // Aluno é o nome da rota no App.js
         }),
       );
     } catch (e) {
