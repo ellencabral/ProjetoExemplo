@@ -11,10 +11,8 @@ import {
 } from 'react-native';
 import MeuButton from '../components/MeuButton';
 import {COLORS} from '../assets/colors';
-import app from '@react-native-firebase/app';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import {CommonActions} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loading from '../components/Loading';
 
@@ -34,12 +32,12 @@ const SignIn = ({navigation}) => {
       const jsonValue = JSON.stringify(value);
       await AsyncStorage.setItem('user', jsonValue);
       setLoading(false);
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{name: 'Alunos'}], // Aluno é o nome da rota no App.js
-        }),
-      );
+      //navigation.dispatch(
+      //  CommonActions.reset({
+      //    index: 0,
+      //    routes: [{name: 'Alunos'}], // Aluno é o nome da rota no App.js
+      //  }),
+      //);
     } catch (e) {
       console.log('SignIn: erro em storeUserCache: ' + e);
     }

@@ -6,7 +6,7 @@ export const AuthUserProvider = ({children}) => {
   const [user, setUser] = useState(null);
   //todos abaixo de AuthUserContext.Provider receberão os valores de user
   return (
-    <AuthUserContext.Provider value={(user, setUser)}>
+    <AuthUserContext.Provider value={{user, setUser}}>
       {children}
     </AuthUserContext.Provider>
   );

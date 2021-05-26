@@ -17,30 +17,19 @@ const Stack = createStackNavigator();
 
 const AppStack = () => {
   return (
-    <NavigationContainer>
-      <StatusBar backgroundColor={COLORS.primaryDark} />
-      <Stack.Navigator initialRouteName="Preload">
-        <Stack.Screen
-          name="Preload"
-          component={Preload}
-          options={preloadStyle}
-        />
-        <Stack.Screen
-          name="Alunos"
-          component={Students}
-          options={studentsStyle}
-        />
-        <Stack.Screen name="Aluno" component={Student} options={studentStyle} />
-        <Stack.Screen
-          name="Cursos"
-          component={Courses}
-          options={coursesStyle}
-        />
-        <Stack.Screen name="Curso" component={Course} options={courseStyle} />
-        <Stack.Screen name="Usuarios" component={Users} options={usersStyle} />
-        <Stack.Screen name="Usuario" component={User} options={userStyle} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Stack.Navigator initialRouteName="Preload">
+      <Stack.Screen name="Preload" component={Preload} options={preloadStyle} />
+      <Stack.Screen
+        name="Alunos"
+        component={Students}
+        options={studentsStyle}
+      />
+      <Stack.Screen name="Aluno" component={Student} options={studentStyle} />
+      <Stack.Screen name="Cursos" component={Courses} options={coursesStyle} />
+      <Stack.Screen name="Curso" component={Course} options={courseStyle} />
+      <Stack.Screen name="Usuarios" component={Users} options={usersStyle} />
+      <Stack.Screen name="Usuario" component={User} options={userStyle} />
+    </Stack.Navigator>
   );
 };
 

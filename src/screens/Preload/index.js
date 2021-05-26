@@ -20,15 +20,16 @@ const Preload = ({navigation}) => {
   const loginUser = async () => {
     const user = await getUserCache();
     if (user) {
-      auth()
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{name: 'Alunos'}],
+        }),
+      );
+      /* auth()
         .signInWithEmailAndPassword(user.email, user.pass)
         .then(() => {
-          navigation.dispatch(
-            CommonActions.reset({
-              index: 0,
-              routes: [{name: 'Alunos'}],
-            }),
-          );
+          
         })
         .catch(e => {
           console.log('SignIn: erro ao entrar: ' + e);
@@ -46,14 +47,14 @@ const Preload = ({navigation}) => {
               Alert.alert('Erro', 'Usuário disabilitado.');
               break;
           }
-        });
+        }); */
     } else {
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{name: 'SignIn'}],
-        }),
-      );
+      //navigation.dispatch(
+      //  CommonActions.reset({
+      //    index: 0,
+      //    routes: [{name: 'SignIn'}],
+      //  }),
+      //);
     }
   };
 

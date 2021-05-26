@@ -13,18 +13,15 @@ const Stack = createStackNavigator();
 
 const AuthStack = () => {
   return (
-    <NavigationContainer>
-      <StatusBar backgroundColor={COLORS.primaryDark} />
-      <Stack.Navigator initialRouteName="SignIn">
-        <Stack.Screen name="SignIn" component={SignIn} options={signInStyle} />
-        <Stack.Screen name="SignUp" component={SignUp} options={signUpStyle} />
-        <Stack.Screen
-          name="ForgotPassword"
-          component={ForgotPassword}
-          options={ForgotPasswordStyle}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Stack.Navigator initialRouteName="SignIn">
+      <Stack.Screen name="SignIn" component={SignIn} options={signInStyle} />
+      <Stack.Screen name="SignUp" component={SignUp} options={signUpStyle} />
+      <Stack.Screen
+        name="ForgotPassword"
+        component={ForgotPassword}
+        options={ForgotPasswordStyle}
+      />
+    </Stack.Navigator>
   );
 };
 
