@@ -4,6 +4,7 @@ import {Container, Image} from './styles';
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {CommonActions} from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const Preload = ({navigation}) => {
   const getUserCache = async () => {
@@ -29,7 +30,7 @@ const Preload = ({navigation}) => {
       /* auth()
         .signInWithEmailAndPassword(user.email, user.pass)
         .then(() => {
-          
+
         })
         .catch(e => {
           console.log('SignIn: erro ao entrar: ' + e);
@@ -60,6 +61,7 @@ const Preload = ({navigation}) => {
 
   useEffect(() => {
     loginUser();
+    Icon.loadFont(); //tem que ler os icons da fonte ao inicializar o app
   }, []);
 
   return (
