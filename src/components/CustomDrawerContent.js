@@ -46,7 +46,7 @@ const ItemMenuText = styled.Text`
   color: ${COLORS.primaryDark};
 `;
 
-const CustomDrawerContent = () => {
+const CustomDrawerContent = ({navigation}) => {
   return (
     <Page>
       <Header>

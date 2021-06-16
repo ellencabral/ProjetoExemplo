@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useContext} from 'react';
 import {Alert} from 'react-native';
 import {Container, Image} from './styles';
 import auth from '@react-native-firebase/auth';
@@ -6,13 +6,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {CommonActions} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
+import {AuthUserContext} from '../../context/AuthUserProvider';
+
 const Preload = ({navigation}) => {
+  const {setUser} = useContext(AuthUserContext);
+
   const getUserCache = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('user');
       console.log('getUserCache');
       console.log(jsonValue);
-      return jsonValue != null ? JSON.parse(jsonValue) : null;
+      return jsonValue !== null ? JSON.parse(jsonValue) : null;
     } catch (e) {
       console.log('Home: erro ao ler o user no cache: ' + e);
     }
@@ -20,6 +24,7 @@ const Preload = ({navigation}) => {
 
   const loginUser = async () => {
     const user = await getUserCache();
+    setUser(user);
     if (user) {
       navigation.dispatch(
         CommonActions.reset({
@@ -49,14 +54,13 @@ const Preload = ({navigation}) => {
               break;
           }
         }); */
-    } else {
+    }
       //navigation.dispatch(
       //  CommonActions.reset({
       //    index: 0,
       //    routes: [{name: 'SignIn'}],
       //  }),
       //);
-    }
   };
 
   useEffect(() => {

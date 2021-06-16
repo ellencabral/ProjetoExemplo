@@ -19,7 +19,7 @@ const User = ({route, navigation}) => {
     setName(route.params.user.name);
     setEmail(route.params.user.email);
     setUid(route.params.user.id);
-  }, []);
+  }, [route]);
 
   const showToast = (message) => {
     ToastAndroid.show(message, ToastAndroid.SHORT);

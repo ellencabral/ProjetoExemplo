@@ -61,7 +61,7 @@ const DrawerHeader = () => {
 
       <DivText>
         <TextWelcome>Bem vindo,</TextWelcome>
-        <TextUserName>{user ? user.email : ''}</TextUserName>
+        <TextUserName>{user ? user.name : ''}</TextUserName>
       </DivText>
     </Container>
   );

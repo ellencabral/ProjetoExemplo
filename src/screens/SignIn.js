@@ -60,10 +60,10 @@ const SignIn = ({navigation}) => {
       });
   };
 
-  const entrar = () => {
+  const entrar = async () => {
     if (email !== '' && pass !== '') {
       setLoading(true);
-      auth()
+      await auth()
         .signInWithEmailAndPassword(email, pass)
         .then(() => {
           if (!auth().currentUser.emailVerified) {
