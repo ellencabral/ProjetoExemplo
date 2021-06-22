@@ -17,24 +17,19 @@ const Div = styled.View`
   flex-direction: row;
 `;
 
-const TextSigla = styled.Text`
-  font-size: 24px;
-  color: ${COLORS.white};
-`;
-
 const TextName = styled.Text`
-  font-size: 16px;
+  font-size: 24px;
   text-align: justify;
   color: ${COLORS.white};
 `;
 
-const TextCampus = styled.Text`
-  font-size: 14px;
+const TextSigla = styled.Text`
+  font-size: 16px;
   color: ${COLORS.white};
 `;
 
 const TextModulos = styled.Text`
-  font-size: 14px;
+  font-size: 16px;
   color: ${COLORS.white};
   margin-left: 5px;
 `;
@@ -43,10 +38,9 @@ const Item = ({item, onPress}) => {
   return (
     <Button onPress={onPress} underlayColor="transparent">
       <>
-        <TextSigla>{item.sigla}</TextSigla>
         <TextName>{item.name}</TextName>
         <Div>
-          <TextCampus>{item.campus}</TextCampus>
+          <TextSigla>{item.sigla}</TextSigla>
           <TextModulos>{item.modulos}</TextModulos>
         </Div>
       </>

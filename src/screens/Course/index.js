@@ -17,7 +17,6 @@ const Course = ({route, navigation}) => {
   const {saveCourse, deleteCourse} = useContext(CourseContext);
 
   useEffect(() => {
-    console.log(route.params.course);
     setCampus('');
     setModulos('');
     setName('');

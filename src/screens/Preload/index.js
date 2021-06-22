@@ -1,22 +1,21 @@
 import React, {useEffect, useContext} from 'react';
-import {Alert} from 'react-native';
 import {Container, Image} from './styles';
-import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {CommonActions} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
+
 import {AuthUserContext} from '../../context/AuthUserProvider';
 import {CourseContext} from '../../context/CourseProvider';
+import {StudentContext} from '../../context/StudentProvider';
 
 const Preload = ({navigation}) => {
   const {setUser} = useContext(AuthUserContext);
   const {getCourses} = useContext(CourseContext);
+  const {getStudents} = useContext(StudentContext);
 
   const getUserCache = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('user');
-      console.log('getUserCache');
-      console.log(jsonValue);
       return jsonValue !== null ? JSON.parse(jsonValue) : null;
     } catch (e) {
       console.log('Home: erro ao ler o user no cache: ' + e);
@@ -68,9 +67,11 @@ const Preload = ({navigation}) => {
     loginUser();
     Icon.loadFont(); //tem que ler os icons da fonte ao inicializar o app
     const unsubscribeCourses = getCourses(); //faz cache dos cursos
+    const unsubscribeStudents = getStudents(); //faz cache dos estudantes
 
     return () => {
       unsubscribeCourses;
+      unsubscribeStudents;
     };
   }, []);
 

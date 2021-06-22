@@ -3,13 +3,15 @@ import React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 
 import {COLORS} from '../assets/colors';
-import Preload from '../screens/Preload';
-import Students from '../screens/Students';
-import Student from '../screens/Student';
-import Courses from '../screens/Courses';
 import Course from '../screens/Course';
-import Users from '../screens/Users';
+import Courses from '../screens/Courses';
+import Preload from '../screens/Preload';
+import Student from '../screens/Student';
+import Students from '../screens/Students';
+import StudentsTab from '../screens/Students/StudentsTab';
+import MapStudentsTab from '../screens/Students/MapStudentsTab';
 import User from '../screens/User';
+import Users from '../screens/Users';
 import LogoutButton from '../components/LogoutButton';
 import CustomDrawerContent from '../components/CustomDrawerContent';
 
@@ -20,7 +22,7 @@ const AppStack = () => {
     <Drawer.Navigator
       initialRouteName="Preload"
       screenOptions={{
-        headerShown: 'true',
+        headerShown: true,
         headerStyle: {backgroundColor: COLORS.primary, paddingRight: 5},
         headerTintColor: COLORS.white,
         headerRight: () => () => <LogoutButton />,
@@ -37,6 +39,16 @@ const AppStack = () => {
         options={studentsStyle}
       />
       <Drawer.Screen name="Aluno" component={Student} options={studentStyle} />
+      <Drawer.Screen
+        name="EstudantesTab"
+        component={StudentsTab}
+        options={studentStyle}
+      />
+      <Drawer.Screen
+        name="EstudantesMapTab"
+        component={MapStudentsTab}
+        options={studentStyle}
+      />
       <Drawer.Screen name="Cursos" component={Courses} options={coursesStyle} />
       <Drawer.Screen name="Curso" component={Course} options={courseStyle} />
       <Drawer.Screen name="Usuarios" component={Users} options={usersStyle} />

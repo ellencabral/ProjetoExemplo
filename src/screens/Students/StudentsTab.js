@@ -1,43 +1,42 @@
 import React, {useContext, useState, useEffect} from 'react';
 import {CommonActions} from '@react-navigation/native';
 
-import {Container, FlatList, Text} from './styles';
+import {Container, FlatList} from './styles';
 import Item from './Item';
 import Loading from '../../components/Loading';
-import {CourseContext} from '../../context/CourseProvider';
 import AddFloatButton from '../../components/AddFloatButton';
+import {StudentContext} from '../../context/StudentProvider';
 
-const Courses = ({navigation}) => {
+const StudentsTab = ({navigation}) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const {courses} = useContext(CourseContext);
+  const {students} = useContext(StudentContext);
 
   useEffect(() => {
-    setData(courses);
+    setData(students);
     setLoading(false);
-    //console.log(courses);
-  }, [courses]);
+  }, [students]);
 
-  const routeCourse = item => {
+  const routeStudent = item => {
     navigation.dispatch(
       CommonActions.navigate({
-        name: 'Curso',
-        params: {course: item},
+        name: 'Aluno',
+        params: {student: item},
       }),
     );
   };
 
-  const routeAddCourse = () => {
+  const routeAddStudent = () => {
     navigation.dispatch(
       CommonActions.navigate({
-        name: 'Curso',
-        params: {course: null},
+        name: 'Aluno',
+        params: {student: null},
       }),
     );
   };
 
   const renderItem = ({item}) => (
-    <Item item={item} onPress={() => routeCourse(item)} />
+    <Item item={item} onPress={() => routeStudent(item)} />
   );
 
   return (
@@ -47,10 +46,10 @@ const Courses = ({navigation}) => {
         renderItem={renderItem}
         keyExtractor={item => item.uid}
       />
-      <AddFloatButton onClick={routeAddCourse} />
+      <AddFloatButton onClick={routeAddStudent} />
       {loading && <Loading />}
     </Container>
   );
 };
 
-export default Courses;
+export default StudentsTab;
