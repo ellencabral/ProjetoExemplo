@@ -5,6 +5,7 @@ import {Container, FlatList, Text} from './styles';
 import Item from './Item';
 import Loading from '../../components/Loading';
 import {CourseContext} from '../../context/CourseProvider';
+import AddFloatButton from '../../components/AddFloatButton';
 
 const Courses = ({navigation}) => {
   const [data, setData] = useState([]);
@@ -26,6 +27,15 @@ const Courses = ({navigation}) => {
     );
   };
 
+  const routeAddCourse = () => {
+    navigation.dispatch(
+      CommonActions.navigate({
+        name: 'Curso',
+        params: {course: null},
+      }),
+    );
+  };
+
   const renderItem = ({item}) => (
     <Item item={item} onPress={() => routeCourse(item)} />
   );
@@ -37,6 +47,7 @@ const Courses = ({navigation}) => {
         renderItem={renderItem}
         keyExtractor={item => item.uid}
       />
+      <AddFloatButton onClick={routeAddCourse} />
       {loading && <Loading />}
     </Container>
   );

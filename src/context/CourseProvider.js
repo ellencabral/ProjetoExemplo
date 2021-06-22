@@ -45,17 +45,33 @@ export const CourseProvider = ({children}) => {
     await firestore()
       .collection('courses')
       .doc(val.uid)
-      .set({
-        campus: val.campus,
-        modulos: val.modulos,
-        name: val.name,
-        sigla: val.sigla,
-      })
+      .set(
+        {
+          campus: val.campus,
+          modulos: val.modulos,
+          name: val.name,
+          sigla: val.sigla,
+        },
+        {merge: true},
+      )
       .then(() => {
         showToast('Dados salvos.');
       })
       .catch(e => {
-        console.error('CourseProvider, save ' + e);
+        console.error('CourseProvider, saveCourse ' + e);
+      });
+  };
+
+  const deleteCourse = async val => {
+    firestore()
+      .collection('courses')
+      .doc(val)
+      .delete()
+      .then(() => {
+        showToast('Curso excluído.');
+      })
+      .catch(e => {
+        console.log('CourseProvider, deleteCourse' + e);
       });
   };
 
@@ -65,6 +81,7 @@ export const CourseProvider = ({children}) => {
         courses,
         getCourses,
         saveCourse,
+        deleteCourse,
       }}>
       {children}
     </CourseContext.Provider>
