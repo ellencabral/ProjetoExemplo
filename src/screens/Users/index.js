@@ -23,7 +23,7 @@ const Users = ({navigation}) => {
             // doc.data() is never undefined for query doc snapshots
             //console.log(doc.id, ' => ', doc.data());
             const user = {
-              id: doc.id,
+              uid: doc.id,
               name: doc.data().name,
               email: doc.data().email,
             };
@@ -47,7 +47,7 @@ const Users = ({navigation}) => {
       title: 'Usuários',
       headerStyle: {backgroundColor: COLORS.primary},
       headerTitleStyle: {color: COLORS.white},
-      headerRight: () => <LogoutButton />,
+      headerRight: () => <LogoutButton nav={navigation} />,
     });
 
     const unsubscribe = getUsers();
@@ -78,7 +78,7 @@ const Users = ({navigation}) => {
       <FlatList
         data={data}
         renderItem={renderItem}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.uid}
       />
       {loading && <Loading />}
     </Container>

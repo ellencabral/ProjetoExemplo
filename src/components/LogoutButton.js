@@ -17,6 +17,7 @@ const Image = styled.Image`
 `;
 
 const LogoutButton = () => {
+
   const signOut = () => {
     AsyncStorage.removeItem('user')
       .then(() => {
@@ -26,7 +27,6 @@ const LogoutButton = () => {
           .catch(e => {
             console.log('LogoutButton, signOut em auth signOut: ' + e);
           });
-        RNRestart.Restart(); // reinicia o app
       })
       .catch(e => {
         console.log('LogoutButton, signOut em removeItem: ' + e);

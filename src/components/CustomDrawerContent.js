@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import styled from 'styled-components/native';
 import DrawerHeader from '../components/DrawerHeader';
 import {AuthUserContext} from '../context/AuthUserProvider';
@@ -47,6 +47,8 @@ const ItemMenuText = styled.Text`
 `;
 
 const CustomDrawerContent = ({navigation}) => {
+  const {signOut} = useContext(AuthUserContext);
+
   return (
     <Page>
       <Header>
@@ -54,7 +56,7 @@ const CustomDrawerContent = ({navigation}) => {
       </Header>
 
       <Body>
-        <ScrollView style={{width: '100%'}}>
+        <ScrollView>
           <DivItem>
             <Icon name="school-outline" size={25} color={COLORS.primaryDark} />
             <ItemMenuText
@@ -79,7 +81,7 @@ const CustomDrawerContent = ({navigation}) => {
             <Icon name="exit-outline" size={25} color={COLORS.primaryDark} />
             <ItemMenuText
               onPress={() => {
-                alert('implementar isso');
+                signOut();
               }}>
               Sair
             </ItemMenuText>

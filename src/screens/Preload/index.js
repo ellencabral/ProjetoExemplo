@@ -5,11 +5,12 @@ import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {CommonActions} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
-
 import {AuthUserContext} from '../../context/AuthUserProvider';
+import {CourseContext} from '../../context/CourseProvider';
 
 const Preload = ({navigation}) => {
   const {setUser} = useContext(AuthUserContext);
+  const {getCourses} = useContext(CourseContext);
 
   const getUserCache = async () => {
     try {
@@ -55,17 +56,22 @@ const Preload = ({navigation}) => {
           }
         }); */
     }
-      //navigation.dispatch(
-      //  CommonActions.reset({
-      //    index: 0,
-      //    routes: [{name: 'SignIn'}],
-      //  }),
-      //);
+    //navigation.dispatch(
+    //  CommonActions.reset({
+    //    index: 0,
+    //    routes: [{name: 'SignIn'}],
+    //  }),
+    //);
   };
 
   useEffect(() => {
     loginUser();
     Icon.loadFont(); //tem que ler os icons da fonte ao inicializar o app
+    const unsubscribeCourses = getCourses(); //faz cache dos cursos
+
+    return () => {
+      unsubscribeCourses;
+    };
   }, []);
 
   return (
