@@ -1,11 +1,15 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState, useContext, useEffect} from 'react';
-import {Alert} from 'react-native';
+import {Alert, StyleSheet} from 'react-native';
 import {Container, TextInput} from './styles';
+
+import {Picker} from '@react-native-picker/picker';
 
 import MeuButton from '../../components/MeuButton';
 import DeleteButton from '../../components/DeleteButton';
 import Loading from '../../components/Loading';
 import {StudentContext} from '../../context/StudentProvider';
+import {CourseContext} from '../../context/CourseProvider';
 
 const Student = ({route, navigation}) => {
   const [latitude, setLatitude] = useState('');
@@ -16,6 +20,8 @@ const Student = ({route, navigation}) => {
   const [uid, setUid] = useState('');
   const [loading, setLoading] = useState(false);
   const {saveStudent, deleteStudent} = useContext(StudentContext);
+  const [coursesSelect, setCoursesSelect] = useState([]);
+  const {courses} = useContext(CourseContext);
 
   useEffect(() => {
     setLatitude('');
@@ -71,6 +77,14 @@ const Student = ({route, navigation}) => {
     ]);
   };
 
+  useEffect(() => {
+    let aux = [];
+    courses.forEach(element => {
+      aux.push(element);
+    });
+    setCoursesSelect(aux);
+  }, [courses]);
+
   return (
     <Container>
       <TextInput
@@ -80,20 +94,30 @@ const Student = ({route, navigation}) => {
         onChangeText={t => setName(t)}
         value={name}
       />
-      <TextInput
-        placeholder="Sigla do Curso"
-        keyboardType="default"
-        returnKeyType="go"
-        onChangeText={t => setSigla(t)}
-        value={sigla}
-      />
-      <TextInput
-        placeholder="Número de Módulos"
-        keyboardType="numeric"
-        returnKeyType="go"
-        onChangeText={t => setModulos(t)}
-        value={modulos}
-      />
+      <Picker
+        selectedValue={sigla}
+        style={styles.picker}
+        onValueChange={itemValue => setSigla(itemValue)}>
+        {coursesSelect.map(e => {
+          return <Picker.Item key={e.uid} label={e.sigla} value={e.sigla} />;
+        })}
+      </Picker>
+      <Picker
+        selectedValue={modulos}
+        style={styles.picker}
+        onValueChange={itemValue => setModulos(itemValue)}>
+        <Picker.Item label="Egresso" value="egresso" />
+        <Picker.Item label="1" value="1" />
+        <Picker.Item label="2" value="2" />
+        <Picker.Item label="3" value="3" />
+        <Picker.Item label="4" value="4" />
+        <Picker.Item label="5" value="5" />
+        <Picker.Item label="6" value="6" />
+        <Picker.Item label="7" value="7" />
+        <Picker.Item label="8" value="8" />
+        <Picker.Item label="9" value="9" />
+        <Picker.Item label="10" value="10" />
+      </Picker>
       <TextInput
         placeholder="Latitude"
         keyboardType="numeric"
@@ -116,3 +140,10 @@ const Student = ({route, navigation}) => {
 };
 
 export default Student;
+
+const styles = StyleSheet.create({
+  picker: {
+    height: 50, 
+    width: '100%',
+  },
+});
