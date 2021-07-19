@@ -14,6 +14,7 @@ export const StudentProvider = ({children}) => {
   const getStudents = async () => {
     const unsubscribe = firestore()
       .collection('students')
+      .orderBy('name')
       .onSnapshot(
         querySnapshot => {
           let d = [];

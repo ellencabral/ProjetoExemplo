@@ -26,9 +26,9 @@ const Student = ({route, navigation}) => {
   useEffect(() => {
     setLatitude('');
     setLongitude('');
-    setModulos('');
+    setModulos('Egresso');
     setName('');
-    setSigla('');
+    setSigla(courses[0].sigla);
     setUid('');
     if (route.params.student) {
       setLatitude(route.params.student.latitude);
@@ -41,6 +41,7 @@ const Student = ({route, navigation}) => {
   }, [route]);
 
   const salvar = async () => {
+    console.log(sigla);
     if (latitude && longitude && modulos && name && sigla) {
       let student = {};
       student.uid = uid;
@@ -106,7 +107,7 @@ const Student = ({route, navigation}) => {
         selectedValue={modulos}
         style={styles.picker}
         onValueChange={itemValue => setModulos(itemValue)}>
-        <Picker.Item label="Egresso" value="egresso" />
+        <Picker.Item label="Egresso" value="Egresso" />
         <Picker.Item label="1" value="1" />
         <Picker.Item label="2" value="2" />
         <Picker.Item label="3" value="3" />
